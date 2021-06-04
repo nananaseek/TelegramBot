@@ -96,8 +96,8 @@ def creat_q():
 
 
 # Планировка отсылания сообщения
-schedule.every(1).seconds.do(do_echo_test, bot, updater)
-schedule.every(1).seconds.do(creat_q)
+schedule.every(5).seconds.do(do_echo_test, bot, updater)
+schedule.every(5).seconds.do(creat_q)
 # schedule.every().day.at('01:00').do(creat_q)
 # schedule.every().day.at('09:15').do(do_echo_morning, bot, updater)
 # schedule.every().day.at('16:45').do(do_echo_day, bot, updater)

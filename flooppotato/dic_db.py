@@ -45,6 +45,12 @@ def init_db(conn, force: bool = False):
 
 
 @ensure_connection
+def createFirstWord(conn):
+    c = conn.cursor()
+    c.execute("insert into words values (1, 'word', 'слово')")
+
+
+@ensure_connection
 def searchE(conn, word: str):
     c = conn.cursor()
     c.execute("SELECT tr FROM words WHERE word = ?", (word,))

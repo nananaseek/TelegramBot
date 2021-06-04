@@ -1,8 +1,7 @@
-import os
+import subprocess
 import threading
 import time
-import subprocess
-
+import os
 
 
 def reqFolderChek():
@@ -14,16 +13,8 @@ def reqFolderChek():
             os.mkdir(folder)
 
 
-def stm():
-    os.system('python Start_main.py')
-
-
-def sm():
-    os.system('python main.py')
-
-
-startMain = threading.Thread(target=os.system, args=("python Start_main.py",))
-Main = threading.Thread(target=os.system, args=('python main.py',))
+startMain = threading.Thread(target=subprocess.call, args=(["python", "Start_main.py"],))
+Main = threading.Thread(target=subprocess.call, args=(["python", "main.py"],))
 
 reqFolderChek()
 
