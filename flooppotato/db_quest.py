@@ -130,6 +130,7 @@ try:
     con_first_q = con_first_q()
     con_second_q = con_second_q()
     con_test_q = con_test_q()
+
 except sqlite3.OperationalError:
     init_db()
     all_id()

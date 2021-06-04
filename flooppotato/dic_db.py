@@ -64,3 +64,7 @@ def searchU(conn, word: str):
     c.execute("SELECT word FROM words WHERE tr = ?", (word,))
     (wd,) = c.fetchone()
     return wd
+
+
+init_db()
+createFirstWord()

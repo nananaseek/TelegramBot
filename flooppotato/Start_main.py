@@ -27,6 +27,7 @@ def do_start(update: Update, context: CallbackContext):
 
 def do_search(update: Update, context: CallbackContext):
     text = update.effective_message.text
+
     try:
         update.message.reply_text(
             text=searchE(word=text),
