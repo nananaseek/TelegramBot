@@ -66,7 +66,7 @@ def do_echo_test (bot: Bot, updater: Updater):
         (chats,) = chats
         bot.send_message(
             chat_id=chats,
-            text=config_tq,
+            text="penis",
         )
 
 
@@ -82,7 +82,6 @@ def creat_q():
             if os.path.exists('Telegram users/' + chats) is True:
                 f = open('Telegram users/' + chats, 'r')
                 openF = f.read().splitlines()
-                print(random_quest)
                 if random_quest not in openF:
                     f = open('Telegram users/' + chats, 'a')
                     f.write(random_quest + '\n')
@@ -96,14 +95,13 @@ def creat_q():
         wr(chats)
 
 
-
-#Планировка отсылания сообщения
-schedule.every(5).seconds.do(do_echo_test, bot, updater)
-# schedule.every(5).seconds.do(creat_q)
-#schedule.every().day.at('01:00').do(creat_q)
+# Планировка отсылания сообщения
+schedule.every(1).seconds.do(do_echo_test, bot, updater)
+schedule.every(1).seconds.do(creat_q)
+# schedule.every().day.at('01:00').do(creat_q)
 # schedule.every().day.at('09:15').do(do_echo_morning, bot, updater)
-#schedule.every().day.at('16:45').do(do_echo_day, bot, updater)
-#schedule.every().day.at('19:27').do(do_echo_test, bot, updater)
+# schedule.every().day.at('16:45').do(do_echo_day, bot, updater)
+# schedule.every().day.at('19:27').do(do_echo_test, bot, updater)
 
 def main():
 

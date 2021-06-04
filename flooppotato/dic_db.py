@@ -1,18 +1,21 @@
 import sqlite3
 
-# __connection = None
-#
+__connection = None
+
+
 # def get_conne():
 #     global __connection
 #     if __connection is None:
 #         __connection = sqlite3.connect('db/Dic.db')
 #         return __connection
 
+
 def ensure_connection(func):
     """ Декоратор для подключения к СУБД: открывает соединение,
         выполняет переданную функцию и закрывает за собой соединение.
         Потокобезопасно!
     """
+
     def inner(*args, **kwargs):
         with sqlite3.connect('db/Dic.db') as conn:
             kwargs['conn'] = conn
@@ -21,12 +24,13 @@ def ensure_connection(func):
 
     return inner
 
-#Создания бази данных со словами если базы даных нету :З
+
+# Создания бази данных со словами если базы даных нету :З
 @ensure_connection
 def init_db(conn, force: bool = False):
-
+    # get_conne()
+    # c = __connection.cursor()
     c = conn.cursor()
-
 
     if force:
         c.execute('DROP TABLE IF EXISTS words')
@@ -39,16 +43,18 @@ def init_db(conn, force: bool = False):
         )
     ''')
 
+
 @ensure_connection
 def searchE(conn, word: str):
     c = conn.cursor()
-    c.execute("SELECT tr FROM words WHERE word = ?", (word, ))
-    (wd, ) = c.fetchone()
+    c.execute("SELECT tr FROM words WHERE word = ?", (word,))
+    (wd,) = c.fetchone()
     return wd
+
 
 @ensure_connection
 def searchU(conn, word: str):
     c = conn.cursor()
-    c.execute("SELECT word FROM words WHERE tr = ?", (word, ))
-    (wd, ) = c.fetchone()
+    c.execute("SELECT word FROM words WHERE tr = ?", (word,))
+    (wd,) = c.fetchone()
     return wd

@@ -6,16 +6,15 @@ from telegram.ext import Updater
 from telegram.ext import MessageHandler
 from telegram.ext import Filters
 
-
-
 from flooppotato.db import init_db
 from flooppotato.db import add_user
 from flooppotato.config import TG_TOKEN
 from flooppotato.dic_db import searchE
 from flooppotato.dic_db import searchU
 
-#Реестрирует пользователя когда тот обращается к боту командой /start
-def do_start ( update: Update, context: CallbackContext):
+
+# Реестрирует пользователя когда тот обращается к боту командой /start
+def do_start(update: Update, context: CallbackContext):
     user = update.effective_user
 
     add_user(
@@ -26,7 +25,7 @@ def do_start ( update: Update, context: CallbackContext):
     )
 
 
-def do_search (update: Update, context: CallbackContext):
+def do_search(update: Update, context: CallbackContext):
     text = update.effective_message.text
     try:
         update.message.reply_text(
@@ -39,8 +38,6 @@ def do_search (update: Update, context: CallbackContext):
 
 
 def main():
-
-
     bot = Bot(
         token=TG_TOKEN,
     )
@@ -48,7 +45,6 @@ def main():
         bot=bot,
         use_context=True,
     )
-
 
     init_db()
 

@@ -6,6 +6,7 @@ def ensure_connection(func):
         выполняет переданную функцию и закрывает за собой соединение.
         Потокобезопасно!
     """
+
     def inner(*args, **kwargs):
         with sqlite3.connect('db/Users.db') as conn:
             kwargs['conn'] = conn
@@ -14,7 +15,8 @@ def ensure_connection(func):
 
     return inner
 
-#Создания бази данных с пользователями
+
+# Создания бази данных с пользователями
 @ensure_connection
 def init_db(conn, force: bool = False):
     """ Проверить что нужные таблицы существуют, иначе создать их
@@ -25,7 +27,6 @@ def init_db(conn, force: bool = False):
         :param force: явно пересоздать все таблицы
     """
     c = conn.cursor()
-
 
     if force:
         c.execute('DROP TABLE IF EXISTS tg_users')
@@ -49,7 +50,13 @@ def add_user(conn, user_id: int):
     c = conn.cursor()
     c.execute('INSERT INTO tg_users (user_id) VALUES (?)', (user_id,))
     conn.commit()
-    
+
+
+@ensure_connection
+def createFirstUser(conn):
+    c = conn.cursor()
+    c.execute('INSERT INTO tg_users (user_id) VALUES (382963259)')
+
 
 @ensure_connection
 def user(conn):
@@ -60,4 +67,10 @@ def user(conn):
     c.execute("SELECT user_id FROM tg_users ORDER BY id")
     return c.fetchall()
 
-twenty_two = user()
+
+try:
+    twenty_two = user()
+except sqlite3.OperationalError:
+    init_db()
+    createFirstUser()
+    twenty_two = user()
