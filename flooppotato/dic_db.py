@@ -48,6 +48,7 @@ def init_db(conn, force: bool = False):
 def createFirstWord(conn):
     c = conn.cursor()
     c.execute("insert into words values (1, 'word', 'слово')")
+    # c.execute("insert into words values (2, 'red', 'червоний')")
 
 
 @ensure_connection
@@ -66,5 +67,21 @@ def searchU(conn, word: str):
     return wd
 
 
-init_db()
-createFirstWord()
+class Check:
+    @ensure_connection
+    def eCheck(conn):
+        c = conn.cursor()
+        c.execute("SELECT word FROM words ORDER BY id")
+        return c.fetchall()
+
+    @ensure_connection
+    def uCheck(conn):
+        c = conn.cursor()
+        c.execute("SELECT tr FROM words ORDER BY id")
+        return c.fetchall()
+
+
+
+
+# init_db()
+# createFirstWord()
