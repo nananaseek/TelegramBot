@@ -1,14 +1,17 @@
 import os
 import threading
 import time
+import subprocess
+
+
 
 def reqFolderChek():
     reqFolder = ['Telegram users', 'db']
     for folder in reqFolder:
-        if folder not in os.listdir():
-            os.mkdir(folder)
-        else:
+        if folder in os.listdir():
             pass
+        else:
+            os.mkdir(folder)
 
 
 def stm():
@@ -18,12 +21,13 @@ def stm():
 def sm():
     os.system('python main.py')
 
-rfc = threading.Thread(target=reqFolderChek())
-startMain = threading.Thread(target=stm())
-Main = threading.Thread(target=sm())
 
+startMain = threading.Thread(target=os.system, args=("python Start_main.py",))
+Main = threading.Thread(target=os.system, args=('python main.py',))
 
-rfc.start()
-rfc.join()
+reqFolderChek()
+
+time.sleep(1)
+
 startMain.start()
 Main.start()
