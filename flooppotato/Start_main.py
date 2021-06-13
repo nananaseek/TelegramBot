@@ -11,9 +11,6 @@ from flooppotato.db import add_user
 from flooppotato.config import TG_TOKEN
 from flooppotato.dic_db import searchE
 from flooppotato.dic_db import searchU
-from flooppotato.dic_db import Check
-
-from translator import go_translate
 
 
 # Реестрирует пользователя когда тот обращается к боту командой /start
@@ -29,31 +26,16 @@ def do_start(update: Update, context: CallbackContext):
 
 
 def do_trans(update: Update, context: CallbackContext):
-    word = update.effective_message.text
-    translate = go_translate(word)
+
+    text = update.effective_message.text
     try:
         update.message.reply_text(
-            text=translate,
+            text=searchE(word=text),
         )
     except:
         update.message.reply_text(
-            text=translate,
+            text=searchU(word=text),
         )
-
-    # eCheck = Check.eCheck()
-    # ucheck = Check.uCheck()
-    # text = update.effective_message.text
-    # if text == 'P':
-    #     if  text in ucheck:
-    #         print(1)
-    #     try:
-    #         update.message.reply_text(
-    #             text=searchE(word=text),
-    #         )
-    #     except:
-    #         update.message.reply_text(
-    #             text=searchU(word=text),
-    #         )
 
 
 def trans(update: Update, context: CallbackContext):

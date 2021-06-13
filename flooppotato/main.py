@@ -74,7 +74,7 @@ def do_echo_test(bot: Bot, updater: Updater):
         (chats,) = chats
         bot.send_message(
             chat_id=chats,
-            text="penis",
+            text="якесь не культурне слово",
         )
 
 

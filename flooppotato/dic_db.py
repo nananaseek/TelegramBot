@@ -47,7 +47,13 @@ def init_db(conn, force: bool = False):
 @ensure_connection
 def createFirstWord(conn):
     c = conn.cursor()
-    c.execute("insert into words values (1, 'word', 'слово')")
+    c.execute("SELECT id FROM words ORDER BY id")
+    c = c.fetchone()
+    if c == None:
+        c = conn.cursor()
+        c.execute("insert into words values (1, 'word', 'слово')")
+    else:
+        pass
     # c.execute("insert into words values (2, 'red', 'червоний')")
 
 
@@ -81,7 +87,5 @@ class Check:
         return c.fetchall()
 
 
-
-
-# init_db()
-# createFirstWord()
+init_db()
+createFirstWord()

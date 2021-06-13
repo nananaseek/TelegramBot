@@ -55,7 +55,7 @@ def add_user(conn, user_id: int):
 @ensure_connection
 def createFirstUser(conn):
     c = conn.cursor()
-    c.execute('INSERT INTO tg_users (user_id) VALUES (382963259)')
+    c.execute('INSERT INTO tg_users (user_id) VALUES ()')
 
 
 @ensure_connection
