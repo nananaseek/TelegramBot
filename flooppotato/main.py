@@ -24,51 +24,58 @@ updater = Updater(
 )
 random_quest = random_quest
 
+
 def config_fq(random_quest):
     random_quest = int(random_quest)
-    (one, ) = con_first_q[random_quest]
+    (one,) = con_first_q[random_quest]
     return one
+
 
 def config_sq(random_quest):
     random_quest = int(random_quest)
-    (two, ) = con_second_q[random_quest]
+    (two,) = con_second_q[random_quest]
     return two
+
 
 def config_tq(random_quest):
     random_quest = int(random_quest)
-    (three, ) = con_test_q[random_quest]
+    (three,) = con_test_q[random_quest]
     return three
+
 
 config_fq = config_fq(random_quest)
 config_sq = config_sq(random_quest)
 config_tq = config_tq(random_quest)
 
 
-#Отсыланеие сообщеня пльзователю в дневное время
-def do_echo_morning (bot: Bot, updater: Updater):
+# Отсыланеие сообщеня пльзователю в дневное время
+def do_echo_morning(bot: Bot, updater: Updater):
     for chats in twenty_two:
         (chats,) = chats
         bot.send_message(
             chat_id=chats,
             text=config_fq,
         )
+
+
 # в середине дня
-def do_echo_day (bot: Bot, updater: Updater):
+def do_echo_day(bot: Bot, updater: Updater):
     for chats in twenty_two:
         (chats,) = chats
         bot.send_message(
             chat_id=chats,
             text=config_sq,
         )
-#Отсылане проверочного сообщения
-def do_echo_test (bot: Bot, updater: Updater):
+
+
+# Отсылане проверочного сообщения
+def do_echo_test(bot: Bot, updater: Updater):
     for chats in twenty_two:
         (chats,) = chats
         bot.send_message(
             chat_id=chats,
-            text=config_tq,
+            text="якесь не культурне слово",
         )
-
 
 
 def creat_q():
@@ -77,12 +84,12 @@ def creat_q():
     """
     for chats in twenty_two:
         (chats,) = chats
+
         def wr(chats):
             chats = str(chats)
             if os.path.exists('Telegram users/' + chats) is True:
                 f = open('Telegram users/' + chats, 'r')
                 openF = f.read().splitlines()
-                print(random_quest)
                 if random_quest not in openF:
                     f = open('Telegram users/' + chats, 'a')
                     f.write(random_quest + '\n')
@@ -93,21 +100,21 @@ def creat_q():
                 f.write(random_quest + '\n')
                 print('file is add')
                 f.close()
+
         wr(chats)
 
 
-
-#Планировка отсылания сообщения
+# Планировка отсылания сообщения
 schedule.every(5).seconds.do(do_echo_test, bot, updater)
-# schedule.every(5).seconds.do(creat_q)
-#schedule.every().day.at('01:00').do(creat_q)
+schedule.every(5).seconds.do(creat_q)
+
+
+# schedule.every().day.at('01:00').do(creat_q)
 # schedule.every().day.at('09:15').do(do_echo_morning, bot, updater)
-#schedule.every().day.at('16:45').do(do_echo_day, bot, updater)
-#schedule.every().day.at('19:27').do(do_echo_test, bot, updater)
+# schedule.every().day.at('16:45').do(do_echo_day, bot, updater)
+# schedule.every().day.at('19:27').do(do_echo_test, bot, updater)
 
 def main():
-
-
     while True:
         schedule.run_pending()
         time.sleep(1)
@@ -123,7 +130,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-
-
-

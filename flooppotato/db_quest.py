@@ -7,6 +7,7 @@ def ensure_connection(func):
         выполняет переданную функцию и закрывает за собой соединение.
         Потокобезопасно!
     """
+
     def inner(*args, **kwargs):
         with sqlite3.connect('db/Quest.db') as conn:
             kwargs['conn'] = conn
@@ -15,7 +16,8 @@ def ensure_connection(func):
 
     return inner
 
-#Создания бази данных со словами если базы даных нету :З
+
+# Создания бази данных со словами если базы даных нету :З
 @ensure_connection
 def init_db(conn, force: bool = False):
     """ Проверить что нужные таблицы существуют, иначе создать их
@@ -26,7 +28,6 @@ def init_db(conn, force: bool = False):
         :param force: явно пересоздать все таблицы
     """
     c = conn.cursor()
-
 
     if force:
         c.execute('DROP TABLE IF EXISTS quests')
@@ -40,6 +41,20 @@ def init_db(conn, force: bool = False):
         )
     ''')
 
+
+@ensure_connection
+def createfirstWord(conn):
+    c = conn.cursor()
+    c.execute('''
+        insert into quests values(
+        1, 
+        "lucky you are resting today",
+        "lucky you are resting today", 
+        "lucky you are resting today"
+        )
+    ''')
+
+
 @ensure_connection
 def id_quests(conn):
     """
@@ -47,8 +62,9 @@ def id_quests(conn):
     """
     c = conn.cursor()
     c.execute("SELECT id FROM quests ORDER BY id DESC limit 0,1")
-    (id_numb, ) = c.fetchone()
+    (id_numb,) = c.fetchone()
     return id_numb
+
 
 @ensure_connection
 def con_first_q(conn):
@@ -59,6 +75,7 @@ def con_first_q(conn):
     c.execute("SELECT first_q FROM quests ORDER BY id")
     return c.fetchall()
 
+
 @ensure_connection
 def con_second_q(conn):
     """
@@ -67,6 +84,7 @@ def con_second_q(conn):
     c = conn.cursor()
     c.execute("SELECT second_q FROM quests ORDER BY id")
     return c.fetchall()
+
 
 @ensure_connection
 def con_test_q(conn):
@@ -77,6 +95,7 @@ def con_test_q(conn):
     c.execute("SELECT test FROM quests ORDER BY id")
     return c.fetchall()
 
+
 @ensure_connection
 def all_id(conn):
     """
@@ -86,11 +105,15 @@ def all_id(conn):
     c = conn.cursor()
     c.execute("SELECT id FROM quests ORDER BY id")
     a = []
-    for all_id_from_bd in c.fetchall():
-        all_id_from_bd = all_id_from_bd[0]
-        a.append(all_id_from_bd)
-        all_id_from_bd = list(map(int, a))
-    return all_id_from_bd
+
+    try:
+        for all_id_from_bd in c.fetchall():
+            all_id_from_bd = all_id_from_bd[0]
+            a.append(all_id_from_bd)
+            all_id_from_bd = list(map(int, a))
+        return all_id_from_bd
+    except UnboundLocalError:
+        createfirstWord()
 
 
 def cool_name_def():
@@ -102,10 +125,16 @@ def cool_name_def():
     return rand_con_id
 
 
+try:
+    random_quest = cool_name_def()
+    con_first_q = con_first_q()
+    con_second_q = con_second_q()
+    con_test_q = con_test_q()
 
-
-random_quest = cool_name_def()
-con_first_q = con_first_q()
-con_second_q = con_second_q()
-con_test_q = con_test_q()
-
+except sqlite3.OperationalError:
+    init_db()
+    all_id()
+    random_quest = cool_name_def()
+    con_first_q = con_first_q()
+    con_second_q = con_second_q()
+    con_test_q = con_test_q()
